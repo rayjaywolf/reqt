@@ -128,33 +128,33 @@ export default function News() {
                                             </div>
                                         </div>
                                     </div>
-                                ) : articles.length > 0 ? (
+                                ) : filteredArticles.length > 0 ? (
                                     <Link
-                                        href={`/news/${articles[0].slug}`}
+                                        href={`/news/${filteredArticles[0].slug}`}
                                         className="group border-4 border-black p-0 bg-purple-600 mb-8 transition-all hover:translate-x-1 hover:-translate-y-1 hover:shadow-[4px_4px_0_0_#000]"
                                     >
                                         <div className="relative h-96 w-full border-4 border-black">
                                             <Image
-                                                src={articles[0].thumbnailImage}
-                                                alt={articles[0].title}
+                                                src={filteredArticles[0].thumbnailImage}
+                                                alt={filteredArticles[0].title}
                                                 fill
-                                                className="object-cover mix-blend-multiply"
+                                                className="object-cover"
                                                 priority
                                             />
                                             <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
                                             <div className="absolute bottom-0 left-0 p-6 w-full">
                                                 <div className="bg-yellow-400 text-black font-black text-sm px-3 py-1 inline-block mb-3 border-2 border-black">
-                                                    {articles[0].category}
+                                                    {filteredArticles[0].category}
                                                 </div>
                                                 <h2 className="text-white font-black text-3xl md:text-4xl mb-3 border-4 border-black bg-black p-3 inline-block">
-                                                    {articles[0].title}
+                                                    {filteredArticles[0].title}
                                                 </h2>
                                                 <div className="flex gap-3">
                                                     <div className="text-white text-sm border-2 border-black bg-[#FF6B00] p-2 inline-block">
-                                                        📅 {formatDate(articles[0].date)}
+                                                        📅 {formatDate(filteredArticles[0].date)}
                                                     </div>
                                                     <div className="text-white text-sm border-2 border-black bg-purple-600 p-2 inline-block">
-                                                        ✍️ {articles[0].author}
+                                                        ✍️ {filteredArticles[0].author}
                                                     </div>
                                                 </div>
                                             </div>
@@ -200,7 +200,7 @@ export default function News() {
                                                     src={article.thumbnailImage}
                                                     alt={article.title}
                                                     fill
-                                                    className="object-cover mix-blend-multiply"
+                                                    className="object-cover"
                                                 />
                                             </div>
                                             <div className="p-4 border-t-4 border-black">

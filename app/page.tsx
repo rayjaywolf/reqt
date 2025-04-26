@@ -142,14 +142,12 @@ export default function Home() {
 
     const loadingInterval = setInterval(() => {
       setLoadingStep(prev => {
-        if (prev < 10) {
+        if (prev < 5) {
           return prev + 1;
         }
         clearInterval(loadingInterval);
         setLoadingComplete(true);
-        setTimeout(() => {
-          setCurrentScreen('wallet');
-        }, 500);
+        setCurrentScreen('wallet');
         return prev;
       });
     }, 1000);
@@ -318,14 +316,12 @@ export default function Home() {
 
     const loadingInterval = setInterval(() => {
       setLoadingStep(prev => {
-        if (prev < 10) {
+        if (prev < 5) {
           return prev + 1;
         }
         clearInterval(loadingInterval);
         setLoadingComplete(true);
-        setTimeout(() => {
-          setCurrentScreen('result');
-        }, 500);
+        setCurrentScreen('result');
         return prev;
       });
     }, 1000);
@@ -491,11 +487,6 @@ ${summaryData.tokens.map(token => `
     "CALCULATING YOUR FINANCIAL MISTAKES...",
     "ANALYZING YOUR POOR DECISION MAKING...",
     "MEASURING YOUR LOSSES...",
-    "GENERATING ROASTING ALGORITHM...",
-    "PREPARING SAVAGE RESPONSES...",
-    "LOADING DISRESPECT LIBRARY...",
-    "CALIBRATING SARCASM LEVELS...",
-    "SYNTHESIZING SAVAGE COMEBACKS...",
     "FINALIZING YOUR HUMILIATION..."
   ];
 
@@ -504,11 +495,6 @@ ${summaryData.tokens.map(token => `
     "LOADING DISRESPECT DATABASE...",
     "CALCULATING YOUR FINANCIAL FAILURES...",
     "ANALYZING YOUR POOR CHOICES...",
-    "MEASURING YOUR LOSSES...",
-    "GENERATING SAVAGE ROASTS...",
-    "PREPARING BRUTAL RESPONSES...",
-    "LOADING SARCASM LIBRARY...",
-    "CALIBRATING SAVAGE LEVELS...",
     "FINALIZING YOUR HUMILIATION..."
   ];
 
@@ -600,8 +586,8 @@ ${summaryData.tokens.map(token => `
                 </div>
 
                 <div className="w-full bg-white border-2 border-black p-3">
-                  <div className="grid grid-cols-10 gap-2">
-                    {[...Array(10)].map((_, i) => (
+                  <div className="grid grid-cols-5 gap-2">
+                    {[...Array(5)].map((_, i) => (
                       <div
                         key={i}
                         className={`h-6 border-2 ${i < loadingStep
@@ -612,12 +598,12 @@ ${summaryData.tokens.map(token => `
                     ))}
                   </div>
                   <div className="mt-2 text-right text-black font-black text-sm">
-                    {loadingStep * 10}% COMPLETE
+                    {loadingStep * 20}% COMPLETE
                   </div>
                 </div>
 
                 <div className="mt-4 text-sm text-purple-600 font-black">
-                  {loadingStep < 5 ? "PREPARING TO EXPOSE YOUR FINANCIAL MISTAKES..." : "ALMOST READY TO ROAST YOUR PORTFOLIO..."}
+                  {loadingStep < 3 ? "PREPARING TO EXPOSE YOUR FINANCIAL MISTAKES..." : "ALMOST READY TO ROAST YOUR PORTFOLIO..."}
                 </div>
               </div>
             </div>
@@ -634,50 +620,52 @@ ${summaryData.tokens.map(token => `
             </div>
 
             <div className="p-4 flex-1 flex flex-col">
-              <div className="font-mono text-white mb-4 border-2 border-white p-3 bg-purple-600">
-                <div className="flex gap-3 mb-2">
-                  <div className="text-lg bg-white text-black px-2 py-1">WALLET:</div>
-                  <div className="text-lg text-white">{walletAddress.slice(0, 6)}...{walletAddress.slice(-4)}</div>
+              <div className="border-4 border-white mb-4">
+                <div className="bg-white text-black p-2 border-b-4 border-black flex items-center justify-between">
+                  <span className="font-black text-lg uppercase">WALLET DETAILS</span>
+                  <span className="bg-black text-white px-2 py-1 font-mono text-sm">{walletAddress.slice(0, 6)}...{walletAddress.slice(-4)}</span>
                 </div>
-                <div className="flex gap-3 mb-2">
-                  <div className="text-base bg-white text-black px-2 py-1">SOL BALANCE:</div>
-                  <div className="text-base text-white">{portfolioData?.nativeBalance?.solana || "0"} SOL</div>
-                </div>
-                <div className="flex gap-3 mb-2">
-                  <div className="text-base bg-white text-black px-2 py-1">TOKENS:</div>
-                  <div className="text-base text-white">{portfolioData?.tokens?.length || 0}</div>
-                </div>
-                <div className="flex gap-3 mb-2">
-                  <div className="text-base bg-white text-black px-2 py-1">NFTS:</div>
-                  <div className="text-base text-white">{portfolioData?.nfts?.length || 0}</div>
-                </div>
-                <div className="flex gap-3">
-                  <div className="text-base bg-white text-black px-2 py-1">SWAPS:</div>
-                  <div className="text-base text-white">{portfolioData?.swaps?.length || 0}</div>
+
+                <div className="grid grid-cols-2 font-mono">
+                  <div className="bg-purple-600 p-6 border-r-4 border-white border-b-4 flex flex-col items-center justify-center">
+                    <div className="text-white font-black text-2xl">{portfolioData?.nativeBalance?.solana || "0"}</div>
+                    <div className="text-white font-black uppercase text-sm">SOL</div>
+                  </div>
+
+                  <div className="bg-yellow-400 p-6 border-b-4 border-white flex flex-col items-center justify-center">
+                    <div className="text-black font-black text-2xl">{portfolioData?.tokens?.length || 0}</div>
+                    <div className="text-black font-black uppercase text-sm">TOKENS</div>
+                  </div>
+
+                  <div className="bg-cyan-400 p-6 border-r-4 border-white flex flex-col items-center justify-center">
+                    <div className="text-black font-black text-2xl">{portfolioData?.nfts?.length || 0}</div>
+                    <div className="text-black font-black uppercase text-sm">NFTS</div>
+                  </div>
+
+                  <div className="bg-green-400 p-6 flex flex-col items-center justify-center">
+                    <div className="text-black font-black text-2xl">{portfolioData?.swaps?.length || 0}</div>
+                    <div className="text-black font-black uppercase text-sm">SWAPS</div>
+                  </div>
                 </div>
               </div>
 
-              <div className="flex justify-center mt-auto mb-4">
+              <div className="mt-auto mb-2 flex flex-col items-center gap-3">
                 <button
                   onClick={handleRoast}
                   disabled={isRoasting}
-                  className="px-6 py-3 bg-white text-black border-2 border-black font-mono font-black uppercase text-lg hover:bg-cyan-400 hover:text-black transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-8 py-3 bg-white text-black border-4 border-black font-mono font-black uppercase text-lg hover:bg-purple-600 hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  &gt;&gt; ROAST PORTFOLIO &lt;&lt;
+                  &gt;&gt; ROAST THIS WALLET &lt;&lt;
                 </button>
-              </div>
 
-              <div className="flex justify-center">
                 <button
                   onClick={handleReset}
-                  className="px-4 py-2 bg-purple-600 text-white border-2 border-black font-mono font-black uppercase text-sm hover:bg-green-400 hover:text-black transition-colors"
+                  className="px-4 py-2 bg-black text-white border-4 border-white font-mono font-black uppercase text-xs hover:bg-red-500 hover:text-white transition-colors"
                 >
-                  LOAD DIFFERENT WALLET
+                  CHECK A DIFFERENT WALLET
                 </button>
               </div>
             </div>
-
-            <div className="bg-white h-1 w-full"></div>
           </section>
         );
 
@@ -701,8 +689,8 @@ ${summaryData.tokens.map(token => `
                 </div>
 
                 <div className="w-full bg-white border-2 border-black p-3">
-                  <div className="grid grid-cols-10 gap-2">
-                    {[...Array(10)].map((_, i) => (
+                  <div className="grid grid-cols-5 gap-2">
+                    {[...Array(5)].map((_, i) => (
                       <div
                         key={i}
                         className={`h-6 border-2 ${i < loadingStep
@@ -713,12 +701,12 @@ ${summaryData.tokens.map(token => `
                     ))}
                   </div>
                   <div className="mt-2 text-right text-black font-black text-sm">
-                    {loadingStep * 10}% COMPLETE
+                    {loadingStep * 20}% COMPLETE
                   </div>
                 </div>
 
                 <div className="mt-4 text-sm text-purple-600 font-black">
-                  {loadingStep < 5 ? "GATHERING EVIDENCE OF YOUR POOR DECISIONS..." : "ALMOST READY TO EXPOSE YOUR FAILURES..."}
+                  {loadingStep < 3 ? "GATHERING EVIDENCE OF YOUR POOR DECISIONS..." : "ALMOST READY TO EXPOSE YOUR FAILURES..."}
                 </div>
               </div>
             </div>
@@ -735,11 +723,26 @@ ${summaryData.tokens.map(token => `
             </div>
 
             <div className="p-4 flex-1 flex flex-col justify-center">
-              <div className="font-mono text-white p-8 mb-4 min-h-[200px] flex items-center justify-center">
-                <div
-                  dangerouslySetInnerHTML={{ __html: typedContent }}
-                  className="text-white text-lg relative font-black"
-                />
+              <div className="font-mono text-white h-full flex items-center justify-center">
+                <div className="flex items-start gap-6 max-w-4xl w-full">
+                  <div className="flex-shrink-0">
+                    <Image
+                      src="/sal.png"
+                      alt="SAL"
+                      width={120}
+                      height={120}
+                      className="rounded-lg border-2 border-white"
+                      priority
+                    />
+                  </div>
+                  <div className="flex-1 bg-white p-6 rounded-lg border-2 border-white relative flex">
+                    <div className="absolute left-[-12px] top-8 w-0 h-0 border-t-[12px] border-t-transparent border-r-[12px] border-r-white border-b-[12px] border-b-transparent" />
+                    <div
+                      dangerouslySetInnerHTML={{ __html: typedContent }}
+                      className="text-black text-xl relative font-black leading-relaxed whitespace-pre-wrap"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
 

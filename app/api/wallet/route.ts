@@ -14,6 +14,62 @@ interface TokenPrice {
     exchangeName: string;
 }
 
+interface QueueEntry {
+    timestamp: number;
+    retryCount: number;
+}
+
+// Rate limiting configuration
+const RATE_LIMIT = {
+    requestsPerMinute: 20,
+    maxQueueSize: 100,
+    maxRetries: 3,
+    retryDelay: 3000, // 3 seconds
+    queueTimeout: 30000, // 30 seconds
+};
+
+// In-memory queue (in production, use Redis or similar)
+const requestQueue = new Map<string, QueueEntry>();
+const activeRequests = new Set<string>();
+
+// Clean up old queue entries
+setInterval(() => {
+    const now = Date.now();
+    for (const [key, entry] of requestQueue.entries()) {
+        if (now - entry.timestamp > RATE_LIMIT.queueTimeout) {
+            requestQueue.delete(key);
+        }
+    }
+    for (const key of activeRequests) {
+        const entry = requestQueue.get(key);
+        if (!entry || now - entry.timestamp > RATE_LIMIT.queueTimeout) {
+            activeRequests.delete(key);
+        }
+    }
+}, 5000);
+
+async function waitInQueue(requestId: string): Promise<boolean> {
+    const entry = requestQueue.get(requestId);
+    if (!entry) return false;
+
+    // Check if we've exceeded max retries
+    if (entry.retryCount >= RATE_LIMIT.maxRetries) {
+        requestQueue.delete(requestId);
+        return false;
+    }
+
+    // Check if we can process this request
+    if (activeRequests.size < RATE_LIMIT.requestsPerMinute) {
+        activeRequests.add(requestId);
+        return true;
+    }
+
+    // Increment retry count and wait
+    entry.retryCount++;
+    await new Promise(resolve => setTimeout(resolve, RATE_LIMIT.retryDelay));
+    return waitInQueue(requestId);
+}
+
 export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams;
     const address = searchParams.get('address');
@@ -32,7 +88,30 @@ export async function GET(request: NextRequest) {
         );
     }
 
+    // Generate unique request ID
+    const requestId = `${address}-${Date.now()}`;
+
+    // Check if queue is full
+    if (requestQueue.size >= RATE_LIMIT.maxQueueSize) {
+        return NextResponse.json(
+            { error: 'Service is currently at capacity. Please try again later.' },
+            { status: 429 }
+        );
+    }
+
+    // Add to queue
+    requestQueue.set(requestId, { timestamp: Date.now(), retryCount: 0 });
+
     try {
+        // Wait in queue
+        const canProceed = await waitInQueue(requestId);
+        if (!canProceed) {
+            return NextResponse.json(
+                { error: 'Request timed out. Please try again.' },
+                { status: 429 }
+            );
+        }
+
         // Fetch portfolio data
         const portfolioResponse = await fetch(
             `https://solana-gateway.moralis.io/account/mainnet/${address}/portfolio?nftMetadata=true`,
@@ -52,7 +131,7 @@ export async function GET(request: NextRequest) {
 
         // Fetch token prices
         const tokensWithPrices = await Promise.all(
-            portfolioData.tokens?.map(async (token) => {
+            portfolioData.tokens?.map(async (token: any) => {
                 try {
                     const priceResponse = await fetch(
                         `https://solana-gateway.moralis.io/token/mainnet/${token.mint}/price`,
@@ -94,6 +173,10 @@ export async function GET(request: NextRequest) {
 
         const swapsData = await swapsResponse.json();
 
+        // Clean up after successful request
+        requestQueue.delete(requestId);
+        activeRequests.delete(requestId);
+
         // Return combined data
         return NextResponse.json({
             ...portfolioData,
@@ -101,6 +184,10 @@ export async function GET(request: NextRequest) {
             swaps: swapsData.result || []
         });
     } catch (error) {
+        // Clean up after failed request
+        requestQueue.delete(requestId);
+        activeRequests.delete(requestId);
+
         console.error('Error fetching wallet data:', error);
         return NextResponse.json(
             { error: 'Failed to fetch wallet data' },
