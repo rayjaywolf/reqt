@@ -94,7 +94,7 @@ export default function Home() {
   const [portfolioData, setPortfolioData] = useState<PortfolioData | null>(null);
   const [isRoasting, setIsRoasting] = useState(false);
   const [roastResult, setRoastResult] = useState<string | null>(null);
-  const [currentScreen, setCurrentScreen] = useState<'input' | 'analyzing' | 'wallet' | 'roasting' | 'result'>('input');
+  const [currentScreen, setCurrentScreen] = useState<'input' | 'analyzing' | 'wallet' | 'roasting' | 'result' | 'advertisement'>('input');
   const [currentParagraphIndex, setCurrentParagraphIndex] = useState<number>(0);
   const [roastParagraphs, setRoastParagraphs] = useState<string[]>([]);
   const [typedContent, setTypedContent] = useState<string>("");
@@ -434,6 +434,9 @@ ${summaryData.tokens.map(token => `
       setCurrentParagraphIndex(prev => prev + 1);
       setTypedContent("");
       setIsTyping(true);
+    } else {
+      // When we reach the last paragraph, show the advertisement screen
+      setCurrentScreen('advertisement');
     }
   };
 
@@ -764,12 +767,60 @@ ${summaryData.tokens.map(token => `
                 </button>
               ) : (
                 <button
-                  onClick={handleReset}
-                  className="px-4 py-2 bg-purple-600 text-white border-2 border-black font-mono font-black uppercase text-sm hover:bg-green-400 hover:text-black transition-colors"
+                  onClick={handleNextParagraph}
+                  className="px-4 py-2 bg-purple-600 text-white border-2 border-black font-mono font-black uppercase text-sm hover:bg-orange-400 hover:text-black transition-colors"
                 >
-                  ROAST ANOTHER WALLET
+                  NEXT &gt;&gt;
                 </button>
               )}
+            </div>
+          </section>
+        );
+
+      case 'advertisement':
+        return (
+          <section className="bg-black p-0 overflow-hidden h-full flex flex-col">
+            <div className="bg-white text-black p-2">
+              <h1 className="text-2xl font-mono font-black tracking-tight text-center uppercase">DON'T GET REKT AGAIN</h1>
+            </div>
+
+            <div className="p-4 flex-1 flex flex-col justify-center">
+              <div className="font-mono text-white h-full flex items-center justify-center">
+                <div className="flex flex-col items-center gap-4 max-w-md w-full">
+                  <div className="bg-[#ff0000] p-4 border-4 border-black w-full">
+                    <h2 className="text-2xl font-black tracking-tight uppercase text-white font-mono text-center">ANTI-RUG FORCE</h2>
+                    <p className="text-lg font-black tracking-tight uppercase text-white font-mono text-center mt-1">DETECT. PROTECT. PROFIT.</p>
+                  </div>
+
+                  <div className="bg-black p-4 border-4 border-[#ff0000] w-full">
+                    <p className="text-white text-lg font-mono leading-relaxed text-center">
+                      <span className="text-[#ff0000] font-black">WARNING:</span> The memecoin wilds are treacherous.
+                      Protect yourself with our powerful contract analysis tool.
+                    </p>
+                  </div>
+
+                  <div className="bg-[#ffff00] p-3 border-4 border-black w-full">
+                    <p className="text-black text-lg font-black tracking-tight uppercase font-mono text-center">COMING SOON: 27.04.25</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-3 flex justify-between bg-black">
+              <button
+                onClick={handleReset}
+                className="px-4 py-2 bg-white text-black border-2 border-black font-mono font-black uppercase text-sm hover:bg-pink-500 hover:text-white transition-colors"
+              >
+                ROAST ANOTHER WALLET
+              </button>
+
+              <Link href="/anti-rug-force">
+                <button
+                  className="px-4 py-2 bg-[#ff0000] text-white border-2 border-black font-mono font-black uppercase text-sm hover:bg-[#ffff00] hover:text-black transition-colors"
+                >
+                  GO TO ANTI-RUG FORCE
+                </button>
+              </Link>
             </div>
           </section>
         );
