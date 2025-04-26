@@ -103,6 +103,23 @@ export default function Home() {
   const [loadingComplete, setLoadingComplete] = useState(false);
   const [solanaPrice, setSolanaPrice] = useState<number | null>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detect mobile devices
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    // Check initially
+    checkMobile();
+
+    // Add event listener for resize
+    window.addEventListener('resize', checkMobile);
+
+    // Cleanup
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     const fetchSolanaPrice = async () => {
@@ -515,45 +532,52 @@ ${summaryData.tokens.map(token => `
 
   // Render different screens based on current state
   const renderScreen = () => {
+    // Common styles using CSS custom properties for responsive values
+    const containerStyle = "bg-black border-2 border-white p-0 overflow-hidden h-full flex flex-col";
+    const headerStyle = "bg-white text-black p-1 border-b-2 border-black";
+    const headerTextStyle = "font-mono font-black tracking-tight text-center uppercase text-base";
+    const contentStyle = "flex-1 flex flex-col items-center justify-center p-2";
+    const buttonBaseStyle = "font-mono font-black uppercase text-xs border-2 transition-colors";
+
     switch (currentScreen) {
       case 'input':
         return (
-          <section className="bg-black border-2 border-white p-0 overflow-hidden h-full flex flex-col justify-start">
-            <div className="bg-white text-black p-2">
-              <h1 className="text-xl font-mono font-black tracking-tight text-center uppercase">ROAST MY PORTFOLIO</h1>
+          <section className={containerStyle}>
+            <div className={headerStyle}>
+              <h1 className={headerTextStyle}>ROAST MY PORTFOLIO</h1>
             </div>
 
-            <div className="p-4 flex-1 flex flex-col items-center justify-center">
-              <div className="mb-4 -mt-4 w-full max-w-sm">
+            <div className={`${contentStyle} justify-center`}>
+              <div className="mb-2 -mt-2 w-full" style={{ maxWidth: isMobile ? "200px" : "400px" }}>
                 <Image
                   src="/text.png"
                   alt="REKT"
-                  width={300}
-                  height={75}
+                  width={isMobile ? 200 : 300}
+                  height={isMobile ? 50 : 75}
                   className="w-full"
                   priority
                 />
               </div>
 
-              <div className="mb-6 font-mono text-white text-center max-w-sm">
-                <p className="text-base font-black mb-1">EXPOSE YOUR FINANCIAL TRAUMA</p>
+              <div className="mb-4 font-mono text-white text-center w-full px-2" style={{ maxWidth: "350px" }}>
+                <p className="text-sm font-black mb-1">EXPOSE YOUR FINANCIAL TRAUMA</p>
                 <p className="text-xs">DROP YOUR SOLANA ADDRESS BELOW AND WATCH US TURN YOUR TRADING HISTORY INTO A COMEDY SPECIAL. WE'RE LIKE YOUR THERAPIST, BUT MEANER.</p>
               </div>
 
-              <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-2 w-full max-w-sm">
+              <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-2 w-full px-2" style={{ maxWidth: "350px" }}>
                 <div className="grid grid-cols-1 gap-2">
                   <input
                     type="text"
                     value={inputAddress}
                     onChange={(e) => setInputAddress(e.target.value)}
                     placeholder="ENTER SOLANA WALLET ADDRESS"
-                    className="px-3 py-2 bg-white text-black border-2 border-black focus:outline-none focus:border-purple-600 font-mono uppercase text-xs text-center"
+                    className="px-2 py-2 bg-white text-black border-2 border-black focus:outline-none focus:border-purple-600 font-mono uppercase text-xs text-center"
                     aria-label="Solana wallet address"
                   />
                   <button
                     type="submit"
                     disabled={isLoading}
-                    className="px-3 py-2 bg-purple-600 text-white border-2 border-black font-mono font-black uppercase text-xs hover:bg-yellow-400 hover:text-black transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    className={`${buttonBaseStyle} px-2 py-2 bg-purple-600 text-white border-black hover:bg-yellow-400 hover:text-black disabled:opacity-50 disabled:cursor-not-allowed`}
                   >
                     {isLoading ? "LOADING..." : "LOAD WALLET"}
                   </button>
@@ -571,41 +595,41 @@ ${summaryData.tokens.map(token => `
 
       case 'analyzing':
         return (
-          <section className="bg-black border-2 border-white p-0 overflow-hidden h-full flex flex-col justify-center">
-            <div className="bg-white text-black p-2">
-              <h1 className="text-2xl font-mono font-black tracking-tight text-center uppercase">ANALYZING YOUR MISTAKES</h1>
+          <section className={containerStyle}>
+            <div className={headerStyle}>
+              <h1 className={headerTextStyle}>ANALYZING YOUR MISTAKES</h1>
             </div>
 
-            <div className="p-4 flex-1 flex flex-col justify-center items-center">
-              <div className="font-mono text-white text-center w-full max-w-2xl">
-                <div className="text-xl mb-3 flex justify-center">
-                  <span className="bg-purple-600 text-white px-4 py-1">WALLET: {walletAddress.slice(0, 6)}...{walletAddress.slice(-4)}</span>
+            <div className={`${contentStyle} justify-center`}>
+              <div className="font-mono text-white text-center w-full px-2" style={{ maxWidth: "450px" }}>
+                <div className="text-base mb-2 flex justify-center">
+                  <span className="bg-purple-600 text-white px-2 py-1">WALLET: {walletAddress.slice(0, 6)}...{walletAddress.slice(-4)}</span>
                 </div>
 
-                <div className="text-lg mb-4 bg-white p-3 border-2 border-black">
+                <div className="text-sm mb-3 bg-white p-2 border-2 border-black">
                   <div className="text-black font-black">
                     {loadingMessages[loadingStep]}
                   </div>
                 </div>
 
-                <div className="w-full bg-white border-2 border-black p-3">
-                  <div className="grid grid-cols-5 gap-2">
+                <div className="w-full bg-white border-2 border-black p-2">
+                  <div className="grid grid-cols-5 gap-1">
                     {[...Array(5)].map((_, i) => (
                       <div
                         key={i}
-                        className={`h-6 border-2 ${i < loadingStep
+                        className={`h-4 border-2 ${i < loadingStep
                           ? 'bg-purple-600 border-black'
                           : 'bg-black border-black'
                           }`}
                       />
                     ))}
                   </div>
-                  <div className="mt-2 text-right text-black font-black text-sm">
+                  <div className="mt-2 text-right text-black font-black text-xs">
                     {loadingStep * 20}% COMPLETE
                   </div>
                 </div>
 
-                <div className="mt-4 text-sm text-purple-600 font-black">
+                <div className="mt-3 text-xs text-purple-600 font-black">
                   {loadingStep < 3 ? "PREPARING TO EXPOSE YOUR FINANCIAL MISTAKES..." : "ALMOST READY TO ROAST YOUR PORTFOLIO..."}
                 </div>
               </div>
@@ -617,53 +641,53 @@ ${summaryData.tokens.map(token => `
 
       case 'wallet':
         return (
-          <section className="bg-black border-2 border-white p-0 overflow-hidden h-full flex flex-col">
-            <div className="bg-white text-black p-2">
-              <h1 className="text-2xl font-mono font-black tracking-tight text-center uppercase">WALLET LOADED</h1>
+          <section className={containerStyle}>
+            <div className={headerStyle}>
+              <h1 className={headerTextStyle}>WALLET LOADED</h1>
             </div>
 
-            <div className="p-4 flex-1 flex flex-col">
-              <div className="border-4 border-white mb-4">
-                <div className="bg-white text-black p-2 border-b-4 border-black flex items-center justify-between">
-                  <span className="font-black text-lg uppercase">WALLET DETAILS</span>
-                  <span className="bg-black text-white px-2 py-1 font-mono text-sm">{walletAddress.slice(0, 6)}...{walletAddress.slice(-4)}</span>
+            <div className={contentStyle}>
+              <div className="border-4 border-white mb-3 w-full">
+                <div className="bg-white text-black p-1 border-b-4 border-black flex items-center justify-between">
+                  <span className="font-black text-sm uppercase">WALLET DETAILS</span>
+                  <span className="bg-black text-white px-1 py-1 font-mono text-xs">{walletAddress.slice(0, 6)}...{walletAddress.slice(-4)}</span>
                 </div>
 
-                <div className="grid grid-cols-2 font-mono">
-                  <div className="bg-purple-600 p-6 border-r-4 border-white border-b-4 flex flex-col items-center justify-center">
-                    <div className="text-white font-black text-2xl">{portfolioData?.nativeBalance?.solana || "0"}</div>
-                    <div className="text-white font-black uppercase text-sm">SOL</div>
+                <div className={isMobile ? "grid grid-cols-2 font-mono" : "grid grid-cols-4 font-mono"}>
+                  <div className="bg-purple-600 p-3 border-b-4 border-white flex flex-col items-center justify-center">
+                    <div className="text-white font-black text-lg">{portfolioData?.nativeBalance?.solana || "0"}</div>
+                    <div className="text-white font-black uppercase text-xs">SOL</div>
                   </div>
 
-                  <div className="bg-yellow-400 p-6 border-b-4 border-white flex flex-col items-center justify-center">
-                    <div className="text-black font-black text-2xl">{portfolioData?.tokens?.length || 0}</div>
-                    <div className="text-black font-black uppercase text-sm">TOKENS</div>
+                  <div className="bg-yellow-400 p-3 border-b-4 border-white flex flex-col items-center justify-center">
+                    <div className="text-black font-black text-lg">{portfolioData?.tokens?.length || 0}</div>
+                    <div className="text-black font-black uppercase text-xs">TOKENS</div>
                   </div>
 
-                  <div className="bg-cyan-400 p-6 border-r-4 border-white flex flex-col items-center justify-center">
-                    <div className="text-black font-black text-2xl">{portfolioData?.nfts?.length || 0}</div>
-                    <div className="text-black font-black uppercase text-sm">NFTS</div>
+                  <div className={`bg-cyan-400 p-3 flex flex-col items-center justify-center ${isMobile ? "border-r-0" : "border-r-0"}`}>
+                    <div className="text-black font-black text-lg">{portfolioData?.nfts?.length || 0}</div>
+                    <div className="text-black font-black uppercase text-xs">NFTS</div>
                   </div>
 
-                  <div className="bg-green-400 p-6 flex flex-col items-center justify-center">
-                    <div className="text-black font-black text-2xl">{portfolioData?.swaps?.length || 0}</div>
-                    <div className="text-black font-black uppercase text-sm">SWAPS</div>
+                  <div className="bg-green-400 p-3 flex flex-col items-center justify-center">
+                    <div className="text-black font-black text-lg">{portfolioData?.swaps?.length || 0}</div>
+                    <div className="text-black font-black uppercase text-xs">SWAPS</div>
                   </div>
                 </div>
               </div>
 
-              <div className="mt-auto mb-2 flex flex-col items-center gap-3">
+              <div className="mt-auto mb-2 flex flex-col items-center gap-2 w-full px-2" style={{ maxWidth: "350px" }}>
                 <button
                   onClick={handleRoast}
                   disabled={isRoasting}
-                  className="px-8 py-3 bg-white text-black border-4 border-black font-mono font-black uppercase text-lg hover:bg-purple-600 hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className={`${buttonBaseStyle} w-full px-4 py-2 bg-white text-black border-black text-base hover:bg-purple-600 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed`}
                 >
                   &gt;&gt; ROAST THIS WALLET &lt;&lt;
                 </button>
 
                 <button
                   onClick={handleReset}
-                  className="px-4 py-2 bg-black text-white border-4 border-white font-mono font-black uppercase text-xs hover:bg-red-500 hover:text-white transition-colors"
+                  className={`${buttonBaseStyle} w-full px-3 py-1 bg-black text-white border-white hover:bg-red-500 hover:text-white`}
                 >
                   CHECK A DIFFERENT WALLET
                 </button>
@@ -674,41 +698,41 @@ ${summaryData.tokens.map(token => `
 
       case 'roasting':
         return (
-          <section className="bg-black border-2 border-white p-0 overflow-hidden h-full flex flex-col justify-center">
-            <div className="bg-white text-black p-2">
-              <h1 className="text-2xl font-mono font-black tracking-tight text-center uppercase">ROASTING YOUR PORTFOLIO</h1>
+          <section className={containerStyle}>
+            <div className={headerStyle}>
+              <h1 className={headerTextStyle}>ROASTING YOUR PORTFOLIO</h1>
             </div>
 
-            <div className="p-4 flex-1 flex flex-col justify-center items-center">
-              <div className="font-mono text-white text-center w-full max-w-2xl">
-                <div className="text-xl mb-3 flex justify-center">
-                  <span className="bg-purple-600 text-white px-4 py-1">PREPARING SAVAGE ROAST</span>
+            <div className={`${contentStyle} justify-center`}>
+              <div className="font-mono text-white text-center w-full px-2" style={{ maxWidth: "450px" }}>
+                <div className="text-base mb-2 flex justify-center">
+                  <span className="bg-purple-600 text-white px-2 py-1">PREPARING SAVAGE ROAST</span>
                 </div>
 
-                <div className="text-lg mb-4 bg-white p-3 border-2 border-black">
+                <div className="text-sm mb-3 bg-white p-2 border-2 border-black">
                   <div className="text-black font-black">
                     {roastingMessages[loadingStep]}
                   </div>
                 </div>
 
-                <div className="w-full bg-white border-2 border-black p-3">
-                  <div className="grid grid-cols-5 gap-2">
+                <div className="w-full bg-white border-2 border-black p-2">
+                  <div className="grid grid-cols-5 gap-1">
                     {[...Array(5)].map((_, i) => (
                       <div
                         key={i}
-                        className={`h-6 border-2 ${i < loadingStep
+                        className={`h-4 border-2 ${i < loadingStep
                           ? 'bg-purple-600 border-black'
                           : 'bg-black border-black'
                           }`}
                       />
                     ))}
                   </div>
-                  <div className="mt-2 text-right text-black font-black text-sm">
+                  <div className="mt-2 text-right text-black font-black text-xs">
                     {loadingStep * 20}% COMPLETE
                   </div>
                 </div>
 
-                <div className="mt-4 text-sm text-purple-600 font-black">
+                <div className="mt-3 text-xs text-purple-600 font-black">
                   {loadingStep < 3 ? "GATHERING EVIDENCE OF YOUR POOR DECISIONS..." : "ALMOST READY TO EXPOSE YOUR FAILURES..."}
                 </div>
               </div>
@@ -720,103 +744,96 @@ ${summaryData.tokens.map(token => `
 
       case 'result':
         return (
-          <section className="bg-black p-0 overflow-hidden h-full flex flex-col">
-            <div className="bg-white text-black p-2">
-              <h1 className="text-2xl font-mono font-black tracking-tight text-center uppercase">PORTFOLIO ROAST</h1>
+          <section className={containerStyle}>
+            <div className={headerStyle}>
+              <h1 className={headerTextStyle}>PORTFOLIO ROAST</h1>
             </div>
 
-            <div className="p-4 flex-1 flex flex-col justify-center">
-              <div className="font-mono text-white h-full flex items-center justify-center">
-                <div className="flex items-start gap-6 max-w-4xl w-full">
+            <div className={contentStyle}>
+              <div className="font-mono text-white h-full flex items-center justify-center w-full">
+                <div className={`flex ${isMobile ? 'flex-col' : 'flex-row'} items-${isMobile ? 'center' : 'start'} gap-3 w-full px-2`} style={{ maxWidth: isMobile ? "100%" : "600px" }}>
                   <div className="flex-shrink-0">
                     <Image
                       src="/sal.png"
                       alt="SAL"
-                      width={120}
-                      height={120}
+                      width={isMobile ? 60 : 120}
+                      height={isMobile ? 60 : 120}
                       className="rounded-lg border-2 border-white"
                       priority
                     />
                   </div>
-                  <div className="flex-1 bg-white p-6 rounded-lg border-2 border-white relative flex">
-                    <div className="absolute left-[-12px] top-8 w-0 h-0 border-t-[12px] border-t-transparent border-r-[12px] border-r-white border-b-[12px] border-b-transparent" />
+                  <div className="flex-1 bg-white p-3 rounded-lg border-2 border-white relative flex">
+                    {!isMobile && (
+                      <div className="absolute left-[-12px] top-8 w-0 h-0 border-t-[12px] border-t-transparent border-r-[12px] border-r-white border-b-[12px] border-b-transparent" />
+                    )}
                     <div
                       dangerouslySetInnerHTML={{ __html: typedContent }}
-                      className="text-black text-xl relative font-black leading-relaxed whitespace-pre-wrap"
+                      className="text-black text-sm relative font-black leading-relaxed whitespace-pre-wrap"
                     />
                   </div>
                 </div>
               </div>
             </div>
 
-            <div className="p-3 flex justify-between bg-black">
+            <div className="p-2 flex justify-between bg-black">
               <button
                 onClick={handlePreviousParagraph}
                 disabled={currentParagraphIndex === 0}
-                className="px-4 py-2 bg-white text-black border-2 border-black font-mono font-black uppercase text-sm hover:bg-pink-500 hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className={`${buttonBaseStyle} px-2 py-1 bg-white text-black border-black hover:bg-pink-500 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed`}
               >
                 &lt;&lt; PREVIOUS
               </button>
 
-              {currentParagraphIndex < roastParagraphs.length - 1 ? (
-                <button
-                  onClick={handleNextParagraph}
-                  className="px-4 py-2 bg-purple-600 text-white border-2 border-black font-mono font-black uppercase text-sm hover:bg-orange-400 hover:text-black transition-colors"
-                >
-                  NEXT &gt;&gt;
-                </button>
-              ) : (
-                <button
-                  onClick={handleNextParagraph}
-                  className="px-4 py-2 bg-purple-600 text-white border-2 border-black font-mono font-black uppercase text-sm hover:bg-orange-400 hover:text-black transition-colors"
-                >
-                  NEXT &gt;&gt;
-                </button>
-              )}
+              <button
+                onClick={handleNextParagraph}
+                className={`${buttonBaseStyle} px-2 py-1 bg-purple-600 text-white border-black hover:bg-orange-400 hover:text-black`}
+              >
+                NEXT &gt;&gt;
+              </button>
             </div>
           </section>
         );
 
       case 'advertisement':
         return (
-          <section className="bg-black p-0 overflow-hidden h-full flex flex-col">
-            <div className="bg-white text-black p-2">
-              <h1 className="text-2xl font-mono font-black tracking-tight text-center uppercase">DON'T GET REKT AGAIN</h1>
+          <section className={containerStyle}>
+            <div className={headerStyle}>
+              <h1 className={headerTextStyle}>DON'T GET REKT AGAIN</h1>
             </div>
 
-            <div className="p-4 flex-1 flex flex-col justify-center">
-              <div className="font-mono text-white h-full flex items-center justify-center">
-                <div className="flex flex-col items-center gap-4 max-w-md w-full">
-                  <div className="bg-[#ff0000] p-4 border-4 border-black w-full">
-                    <h2 className="text-2xl font-black tracking-tight uppercase text-white font-mono text-center">ANTI-RUG FORCE</h2>
-                    <p className="text-lg font-black tracking-tight uppercase text-white font-mono text-center mt-1">DETECT. PROTECT. PROFIT.</p>
+            <div className={contentStyle}>
+              <div className="font-mono text-white h-full flex items-center justify-center w-full">
+                <div className="flex flex-col items-center gap-3 w-full px-2" style={{ maxWidth: isMobile ? "100%" : "450px" }}>
+                  <div className="bg-[#ff0000] p-3 border-4 border-black w-full">
+                    <h2 className="text-lg font-black tracking-tight uppercase text-white font-mono text-center">ANTI-RUG FORCE</h2>
+                    <p className="text-base font-black tracking-tight uppercase text-white font-mono text-center mt-1">DETECT. PROTECT. PROFIT.</p>
                   </div>
 
-                  <div className="bg-black p-4 border-4 border-[#ff0000] w-full">
-                    <p className="text-white text-lg font-mono leading-relaxed text-center">
+                  <div className="bg-black p-3 border-4 border-[#ff0000] w-full">
+                    <p className="text-white text-sm font-mono leading-relaxed text-center">
                       <span className="text-[#ff0000] font-black">WARNING:</span> The memecoin wilds are treacherous.
                       Protect yourself with our powerful contract analysis tool.
                     </p>
                   </div>
 
-                  <div className="bg-[#ffff00] p-3 border-4 border-black w-full">
-                    <p className="text-black text-lg font-black tracking-tight uppercase font-mono text-center">COMING SOON: 27.04.25</p>
+                  <div className="bg-[#ffff00] p-2 border-4 border-black w-full">
+                    <p className="text-black text-sm font-black tracking-tight uppercase font-mono text-center">COMING SOON: 27.04.25</p>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div className="p-3 flex justify-between bg-black">
+            <div className="p-2 flex justify-between bg-black">
               <button
                 onClick={handleReset}
-                className="px-4 py-2 bg-white text-black border-2 border-black font-mono font-black uppercase text-sm hover:bg-pink-500 hover:text-white transition-colors"
+                className={`${buttonBaseStyle} px-2 py-1 bg-white text-black border-black hover:bg-pink-500 hover:text-white`}
               >
                 ROAST ANOTHER WALLET
               </button>
 
               <Link href="/anti-rug-force">
                 <button
-                  className="px-4 py-2 bg-[#ff0000] text-white border-2 border-black font-mono font-black uppercase text-sm hover:bg-[#ffff00] hover:text-black transition-colors"
+                  className={`${buttonBaseStyle} px-2 py-1 bg-[#ff0000] text-white border-black hover:bg-[#ffff00] hover:text-black`}
                 >
                   GO TO ANTI-RUG FORCE
                 </button>
@@ -830,5 +847,11 @@ ${summaryData.tokens.map(token => `
     }
   };
 
-  return renderScreen();
+  return (
+    <div className="h-screen w-full flex flex-col relative overflow-hidden pb-4">
+      <div className="flex-1 overflow-y-auto">
+        {renderScreen()}
+      </div>
+    </div>
+  );
 }

@@ -28,10 +28,21 @@ interface ArticleData {
     content: MDXRemoteSerializeResult;
 }
 
+interface Article {
+    slug: string;
+    title: string;
+    date: string;
+    author: string;
+    thumbnailImage: string;
+    category: string;
+    excerpt: string;
+}
+
 export default function ArticlePage() {
     const [solanaPrice, setSolanaPrice] = useState<number | null>(null);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [article, setArticle] = useState<ArticleData | null>(null);
+    const [relatedArticles, setRelatedArticles] = useState<Article[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const params = useParams();
     const slug = params.slug as string;
@@ -56,6 +67,12 @@ export default function ArticlePage() {
                 if (response.ok) {
                     const data = await response.json();
                     setArticle(data);
+                    // Fetch related articles after getting the main article
+                    const relatedResponse = await fetch(`/api/articles/related/${slug}`);
+                    if (relatedResponse.ok) {
+                        const relatedData = await relatedResponse.json();
+                        setRelatedArticles(relatedData.articles);
+                    }
                 } else {
                     console.error('Failed to fetch article');
                 }
@@ -119,50 +136,114 @@ export default function ArticlePage() {
                     ) : article ? (
                         <article className="bg-black border-4 border-white p-0 overflow-y-auto flex flex-col shadow-[8px_8px_0_0_#000]">
                             {/* Article Header */}
-                            <div className="bg-yellow-400 text-black p-3 border-b-4 border-black px-16">
+                            <div className="bg-yellow-400 text-black p-2 md:p-3 border-b-4 border-black px-4 md:px-16">
                                 <div className="flex justify-between items-center">
                                     <Link
                                         href="/news"
-                                        className="text-black hover:text-purple-600 transition-colors font-mono font-black border-2 border-black bg-white px-3 py-1 hover:bg-[#FF6B00]"
+                                        className="text-black hover:text-purple-600 transition-colors font-mono font-black border-2 border-black bg-white px-2 md:px-3 py-1 hover:bg-[#FF6B00] text-xs md:text-sm"
                                     >
                                         &larr; BACK TO NEWS
                                     </Link>
-                                    <div className="text-sm font-mono border-2 border-black bg-black text-white p-2 inline-block">
+                                    <div className="text-xs md:text-sm font-mono border-2 border-black bg-black text-white p-1 md:p-2 inline-block">
                                         🗓 {formatDate(article.date)}
                                     </div>
                                 </div>
                             </div>
 
                             {/* Banner Image */}
+                            <div className="relative h-48 md:h-64 w-full border-4 border-black">
+                                <Image
+                                    src={article.bannerImage}
+                                    alt={article.title}
+                                    fill
+                                    className="object-cover"
+                                    priority
+                                />
+                            </div>
 
                             {/* Article Content */}
-                            <div className="p-6 flex-1 flex flex-col space-y-8 overflow-y-auto px-16">
+                            <div className="p-3 md:p-6 flex-1 flex flex-col space-y-4 md:space-y-8 overflow-y-auto px-4 md:px-16">
                                 {/* Article Meta */}
-                                <div className="border-4 border-black p-6 bg-purple-600">
-                                    <div className="text-white font-black text-3xl mb-3 border-4 border-black bg-black p-3 inline-block">
+                                <div className="border-4 border-black p-3 md:p-6 bg-purple-600">
+                                    <div className="text-white font-black text-xl md:text-3xl mb-2 md:mb-3 border-4 border-black bg-black p-2 md:p-3 inline-block">
                                         {article.category}
                                     </div>
-                                    <h1 className="text-white font-black text-4xl mb-4 border-4 border-black bg-black p-3">
+                                    <h1 className="text-white font-black text-2xl md:text-4xl mb-3 md:mb-4 border-4 border-black bg-black p-2 md:p-3">
                                         {article.title}
                                     </h1>
-                                    <div className="flex gap-4">
-                                        <div className="text-white text-lg border-2 border-black bg-[#FF6B00] p-2 inline-block">
+                                    <div className="flex flex-wrap gap-2 md:gap-4">
+                                        <div className="text-white text-sm md:text-lg border-2 border-black bg-[#FF6B00] p-1 md:p-2 inline-block">
                                             ✍️ BY {article.author}
                                         </div>
-                                        <div className="text-white text-lg border-2 border-black bg-purple-600 p-2 inline-block">
+                                        <div className="text-white text-sm md:text-lg border-2 border-black bg-purple-600 p-1 md:p-2 inline-block">
                                             ⏱ 5 MIN READ
                                         </div>
                                     </div>
                                 </div>
 
                                 {/* Article Body */}
-                                <div className="prose prose-invert max-w-none space-y-6">
+                                <div className="prose prose-invert max-w-none space-y-4 md:space-y-6 prose-headings:text-white prose-headings:font-black prose-headings:border-2 prose-headings:border-black prose-headings:bg-black prose-headings:p-2 prose-headings:inline-block prose-p:text-white prose-p:text-sm md:prose-p:text-base prose-a:text-purple-400 prose-a:no-underline hover:prose-a:text-yellow-400 prose-img:border-4 prose-img:border-black prose-img:rounded-none prose-img:my-4 md:prose-img:my-8 prose-img:mx-auto prose-img:max-w-full prose-img:h-auto prose-img:w-auto prose-img:object-contain">
                                     <MDXRemote
                                         {...article.content}
                                         components={components}
                                     />
                                 </div>
 
+                                {/* Related Articles */}
+                                <div className="border-4 border-black p-3 md:p-6 bg-[#FF6B00] mt-4 md:mt-8">
+                                    <div className="text-white font-black text-xl md:text-2xl mb-3 md:mb-4">RELATED ARTICLES</div>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                                        {relatedArticles.map((relatedArticle) => (
+                                            <Link
+                                                key={relatedArticle.slug}
+                                                href={`/news/${relatedArticle.slug}`}
+                                                className="group border-4 border-black p-0 bg-purple-600 transition-all hover:translate-x-1 hover:-translate-y-1 hover:shadow-[4px_4px_0_0_#000]"
+                                            >
+                                                <div className="relative h-40 md:h-48 w-full border-4 border-black">
+                                                    <Image
+                                                        src={relatedArticle.thumbnailImage}
+                                                        alt={relatedArticle.title}
+                                                        fill
+                                                        className="object-cover"
+                                                    />
+                                                </div>
+                                                <div className="p-3 md:p-4 border-t-4 border-black">
+                                                    <div className="bg-white text-black font-black text-xs px-2 py-1 inline-block mb-2 border-2 border-black">
+                                                        {relatedArticle.category}
+                                                    </div>
+                                                    <h3 className="text-white font-black text-base md:text-lg mb-2 border-2 border-black bg-black p-2">
+                                                        {relatedArticle.title}
+                                                    </h3>
+                                                    <div className="flex justify-between items-center">
+                                                        <div className="text-white text-xs bg-black p-1 md:p-2 border-2 border-white">
+                                                            🗓 {formatDate(relatedArticle.date)}
+                                                        </div>
+                                                        <div className="bg-yellow-400 text-black px-2 md:px-3 py-1 border-2 border-black font-mono font-black text-xs md:text-sm hover:bg-white transition-colors">
+                                                            READ MORE →
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </Link>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* Newsletter Signup */}
+                                <div className="border-4 border-black p-3 md:p-5 bg-purple-600 mt-4 md:mt-8">
+                                    <div className="text-white font-black text-xl md:text-2xl mb-2 md:mb-3">GET REKT UPDATES</div>
+                                    <div className="flex flex-col md:flex-row gap-2 md:gap-3">
+                                        <input
+                                            type="email"
+                                            placeholder="ENTER YOUR EMAIL"
+                                            className="px-3 md:px-4 py-2 md:py-3 bg-white text-black border-2 border-black focus:outline-none focus:border-yellow-400 font-mono uppercase text-xs md:text-sm flex-1"
+                                        />
+                                        <button
+                                            className="px-4 md:px-6 py-2 md:py-3 bg-yellow-400 text-black border-2 border-black font-mono font-black uppercase text-xs md:text-sm hover:bg-white hover:border-white transition-all"
+                                        >
+                                            SUBSCRIBE
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </article>
                     ) : (
