@@ -113,19 +113,21 @@ export default function ClientLayout({
                             />
                         </Link>
                     </div>
-                    <Link href="/roadmap"
+                    <div
                         className="absolute bottom-8 left-35 cursor-pointer transform hover:scale-110 transition-transform animate-float-3 pointer-events-auto"
                         onClick={() => handleMenuIconClick('roadmap')}
                     >
-                        <Image
-                            src="/roadmap.svg"
-                            alt="Roadmap"
-                            width={130}
-                            height={130}
-                            className="rounded-none"
-                            priority
-                        />
-                    </Link>
+                        <Link href="/roadmap">
+                            <Image
+                                src="/roadmap.svg"
+                                alt="Roadmap"
+                                width={130}
+                                height={130}
+                                className="rounded-none"
+                                priority
+                            />
+                        </Link>
+                    </div>
                     <div
                         className="absolute bottom-25 left-50 cursor-pointer transform hover:scale-110 transition-transform animate-float-4 pointer-events-auto"
                         onClick={() => handleMenuIconClick('about')}
@@ -165,7 +167,7 @@ export default function ClientLayout({
                     </svg>
                     TWITTER
                 </Link>
-                <Link href="https://t.me/rmp" target="_blank" className="rotate-360 [writing-mode:vertical-lr] font-mono font-bold tracking-wider py-2 flex items-center gap-2">
+                <Link href="https://t.me/Roastmyportfolio" target="_blank" className="rotate-360 [writing-mode:vertical-lr] font-mono font-bold tracking-wider py-2 flex items-center gap-2">
                     <svg className="rotate-90" fill="#FFFFFF" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="16" height="16">
                         <path d="m12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12c0-6.627-5.373-12-12-12zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.295-.6.295-.002 0-.003 0-.005 0l.213-3.054 5.56-5.022c.24-.213-.054-.334-.373-.121l-6.869 4.326-2.96-.924c-.64-.203-.658-.64.135-.954l11.566-4.458c.538-.196 1.006.128.832.941z"></path>
                     </svg>
