@@ -69,11 +69,17 @@ export default function ClientLayout({
                     <Link href="/" className="font-mono font-bold text-black text-xl py-4 border-b-2 border-[#ffeb3b]" onClick={() => setIsMenuOpen(false)}>
                         Home
                     </Link>
+                    <Link href="/portfolio" className="font-mono font-bold text-black text-xl py-4 border-b-2 border-[#ffeb3b]" onClick={() => setIsMenuOpen(false)}>
+                        Portfolio
+                    </Link>
                     <Link href="/news" className="font-mono font-bold text-black text-xl py-4 border-b-2 border-[#ffeb3b]" onClick={() => setIsMenuOpen(false)}>
                         News
                     </Link>
                     <Link href="/roadmap" className="font-mono font-bold text-black text-xl py-4 border-b-2 border-[#ffeb3b]" onClick={() => setIsMenuOpen(false)}>
                         Roadmap
+                    </Link>
+                    <Link href="/anti-rug-force" className="font-mono font-bold text-black text-xl py-4 border-b-2 border-[#ffeb3b]" onClick={() => setIsMenuOpen(false)}>
+                        Anti-Rug Force
                     </Link>
                     <Link href="/about" className="font-mono font-bold text-black text-xl py-4 border-b-2 border-[#ffeb3b]" onClick={() => setIsMenuOpen(false)}>
                         About
@@ -200,16 +206,21 @@ export default function ClientLayout({
             </div>
 
             {/* Top ticker */}
-            <div className="hidden md:block w-full bg-white text-[#FF6B00] py-1 text-center font-mono font-bold tracking-wider border-4 border-[#ffeb3b] relative z-10">
-                CONTRACT ADDRESS:
-                <span className="text-red-600"> SOON</span>
+            <div className="hidden md:flex w-full bg-white text-[#FF6B00] py-1 text-center font-mono font-bold tracking-wider border-4 border-[#ffeb3b] relative z-10 gap-4 justify-center">
+                <Link href="/news" className="underline font-mono font-bold tracking-wider animate-color-cycle">
+                    BREAKING NEWS!
+                </Link>
+                <Link href="/portfolio" className="text-black underline hover:text-red-500 font-mono font-bold tracking-wider">
+                    PORTFOLIO
+                </Link>
+                <Link href="/" className="text-black underline hover:text-red-500 font-mono font-bold tracking-wider">ROAST</Link>
+                <Link href="/anti-rug-force" className="text-black underline hover:text-red-500 font-mono font-bold tracking-wider">ANTI-RUG FORCE</Link>
             </div>
 
             {/* Left border */}
-            <div className="hidden md:flex absolute left-4 top-4 bottom-4 w-10 bg-[#ffeb3b] text-[#FF6B00] items-center justify-center border-4 border-[#ffeb3b] z-0">
-                <Link href="/news" className="rotate-180 [writing-mode:vertical-lr] font-mono font-bold tracking-wider py-2 animate-color-cycle">
-                    BREAKING NEWS!
-                </Link>
+            <div className="hidden md:flex absolute left-4 top-4 bottom-4 w-10 bg-[#ffeb3b] text-[#000] items-center justify-center border-4 border-[#ffeb3b] z-0 [writing-mode:vertical-lr] rotate-180 font-mono font-bold tracking-wider py-2">
+                CONTRACT ADDRESS:
+                <span className="text-red-600"> &nbsp; SOON</span>
             </div>
 
             {/* Right border */}

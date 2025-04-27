@@ -781,7 +781,7 @@ ${summaryData.tokens.map(token => `
         return (
           <section className="bg-black p-0 overflow-hidden h-full flex flex-col">
             <div className="bg-white text-black p-2">
-              <h1 className="text-xl md:text-2xl font-mono font-black tracking-tight text-center uppercase">DON'T GET REKT AGAIN</h1>
+              <h1 className="text-xl md:text-2xl font-mono font-black tracking-tight text-center uppercase">DON'T GET REQT AGAIN</h1>
             </div>
 
             <div className="p-4 flex-1 flex flex-col justify-center">

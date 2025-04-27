@@ -28,7 +28,7 @@ export default function About() {
     return (
         <section className="bg-black border-4 border-white p-0 h-full flex flex-col overflow-hidden">
             <div className="bg-white text-black p-3 border-b-4 border-black">
-                <h1 className="text-3xl font-mono font-black tracking-tight text-center uppercase">ABOUT REKT</h1>
+                <h1 className="text-3xl font-mono font-black tracking-tight text-center uppercase">ABOUT REQT</h1>
             </div>
 
             <div className="p-6 flex-1 overflow-y-auto">
@@ -52,15 +52,18 @@ export default function About() {
                                 <p>
                                     Hey degens! I'm Sal, your brutally honest guide through the dumpster fire that is the Solana ecosystem. I've seen enough rug pulls and "moon soon" projects to make a therapist need therapy.
                                 </p>
+                                <p>
+                                    I'm here to expose your financial trauma, analyze your poor decision-making, and turn your trading history into a comedy special. Think of me as your therapist, but meaner.
+                                </p>
                             </div>
                         </div>
                     </div>
 
-                    {/* What is REKT - Spans 6 columns, 2 rows */}
+                    {/* What is REQT - Spans 6 columns, 2 rows */}
                     <div className="col-span-12 md:col-span-6 row-span-2 bg-white border-4 border-black p-4 flex flex-col min-h-[200px]">
-                        <h3 className="text-2xl font-mono font-black text-black mb-2">WHAT IS REKT?</h3>
+                        <h3 className="text-2xl font-mono font-black text-black mb-2">WHAT IS REQT?</h3>
                         <p className="text-black font-mono flex-1">
-                            REKT is a satirical platform that exposes the absurdity of the Solana ecosystem. We analyze your wallet, mock your trading decisions, and turn your financial losses into comedy gold.
+                            REQT is a satirical platform that exposes the absurdity of the Solana ecosystem. We analyze your wallet, mock your trading decisions, and turn your financial losses into comedy gold.
                         </p>
                         <div className="mt-4 bg-black text-white p-2 font-mono text-sm border-2 border-black">
                             <span className="font-black">CONTRACT:</span> ALUhJzNV349geyKwH5msJRfq9EjMsQ7vTRCiEaWFjh4j
@@ -69,7 +72,7 @@ export default function About() {
 
                     {/* Stats Box - Spans 6 columns, 2 rows */}
                     <div className="col-span-12 md:col-span-6 row-span-2 bg-[#3FAC48] border-4 border-black p-4 flex flex-col min-h-[200px]">
-                        <h3 className="text-2xl font-mono font-black text-white mb-2">REKT STATS</h3>
+                        <h3 className="text-2xl font-mono font-black text-white mb-2">REQT STATS</h3>
                         <div className="grid grid-cols-2 gap-4 flex-1">
                             <div className="bg-white border-4 border-black p-3 flex flex-col items-center justify-center">
                                 <span className="text-4xl font-black text-black">∞</span>
@@ -122,6 +125,114 @@ export default function About() {
                         <p className="text-white font-mono text-sm text-center">
                             Still not enough to recover your losses
                         </p>
+                    </div>
+
+                    {/* Features Section - Spans 12 columns, 2 rows */}
+                    <div className="col-span-12 row-span-2 bg-[#FF6B00] border-4 border-black p-4">
+                        <h3 className="text-2xl font-mono font-black text-white mb-4">REQT FEATURES</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div className="bg-white border-4 border-black p-4">
+                                <h4 className="text-xl font-mono font-black text-black mb-2">PORTFOLIO ANALYSIS</h4>
+                                <p className="text-black font-mono">
+                                    We analyze your Solana wallet to track your tokens, NFTs, and swap history. Our AI calculates your realized and unrealized gains (or more likely, losses).
+                                </p>
+                            </div>
+                            <div className="bg-white border-4 border-black p-4">
+                                <h4 className="text-xl font-mono font-black text-black mb-2">BRUTAL ROASTS</h4>
+                                <p className="text-black font-mono">
+                                    Our AI generates personalized roasts based on your trading history, mocking your poor decisions and turning your financial trauma into comedy gold.
+                                </p>
+                            </div>
+                            <div className="bg-white border-4 border-black p-4">
+                                <h4 className="text-xl font-mono font-black text-black mb-2">CRYPTO NEWS</h4>
+                                <p className="text-black font-mono">
+                                    Stay informed with our unique blend of crypto news and pure entertainment. We keep you updated on the latest dumpster fires in the Solana ecosystem.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Roadmap Section - Spans 12 columns, 3 rows */}
+                    <div className="col-span-12 row-span-3 bg-[#3FAC48] border-4 border-black p-4">
+                        <h3 className="text-2xl font-mono font-black text-white mb-4">ROADMAP TO REQT</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="bg-white border-4 border-black p-4">
+                                <h4 className="text-xl font-mono font-black text-black mb-2">LIVE NOW</h4>
+                                <ul className="space-y-2 text-black font-mono">
+                                    <li className="flex items-start">
+                                        <span className="mr-2">🔥</span>
+                                        <div>
+                                            <span className="font-black">Roast My Portfolio</span>
+                                            <p className="text-sm">Get brutally honest feedback on your portfolio. Warning: May cause temporary ego damage.</p>
+                                        </div>
+                                    </li>
+                                    <li className="flex items-start">
+                                        <span className="mr-2">📰</span>
+                                        <div>
+                                            <span className="font-black">Crypto Daily</span>
+                                            <p className="text-sm">Stay informed with our unique blend of crypto news and pure entertainment.</p>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div className="bg-white border-4 border-black p-4">
+                                <h4 className="text-xl font-mono font-black text-black mb-2">COMING SOON</h4>
+                                <ul className="space-y-2 text-black font-mono">
+                                    <li className="flex items-start">
+                                        <span className="mr-2">⚠️</span>
+                                        <div>
+                                            <span className="font-black">Anti-Rug Force</span>
+                                            <p className="text-sm">Advanced AI to spot rug pulls before they happen. Your first line of defense. <span className="bg-black text-white px-2 py-0.5 text-xs">27.04.25</span></p>
+                                        </div>
+                                    </li>
+                                    <li className="flex items-start">
+                                        <span className="mr-2">💰</span>
+                                        <div>
+                                            <span className="font-black">Wallet Gone Wild</span>
+                                            <p className="text-sm">Track your gains, losses, and everything in between. Reality check included. <span className="bg-black text-white px-2 py-0.5 text-xs">May 2025</span></p>
+                                        </div>
+                                    </li>
+                                    <li className="flex items-start">
+                                        <span className="mr-2">🧠</span>
+                                        <div>
+                                            <span className="font-black">Crypto Guru</span>
+                                            <p className="text-sm">Learn crypto finance from SAL, our AI teacher. No judgment (lies), just pure knowledge. <span className="bg-black text-white px-2 py-0.5 text-xs">August 2025</span></p>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Portfolio Analysis Section - Spans 12 columns, 2 rows */}
+                    <div className="col-span-12 row-span-2 bg-[#FFEB3B] border-4 border-black p-4">
+                        <h3 className="text-2xl font-mono font-black text-black mb-4">PORTFOLIO ANALYSIS</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="bg-white border-4 border-black p-4">
+                                <h4 className="text-xl font-mono font-black text-black mb-2">TOKEN TRACKING</h4>
+                                <p className="text-black font-mono mb-2">
+                                    We track all your current and past tokens, including:
+                                </p>
+                                <ul className="list-disc pl-5 text-black font-mono space-y-1">
+                                    <li>Current token holdings and balances</li>
+                                    <li>Historical tokens you've sold</li>
+                                    <li>Realized and unrealized gains/losses</li>
+                                    <li>Average buy and sell prices</li>
+                                </ul>
+                            </div>
+                            <div className="bg-white border-4 border-black p-4">
+                                <h4 className="text-xl font-mono font-black text-black mb-2">SWAP HISTORY</h4>
+                                <p className="text-black font-mono mb-2">
+                                    We analyze your swap transactions to provide:
+                                </p>
+                                <ul className="list-disc pl-5 text-black font-mono space-y-1">
+                                    <li>Complete swap history with timestamps</li>
+                                    <li>Token pairs and exchange information</li>
+                                    <li>Total value of each transaction</li>
+                                    <li>Performance metrics for your trading</li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
 
                     {/* Disclaimer - Spans 12 columns, 1 row */}
