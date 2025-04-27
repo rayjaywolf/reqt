@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
@@ -70,7 +70,7 @@ interface ProfitCalculation {
     averageSellPrice: number;
 }
 
-export default function PortfolioPage() {
+function PortfolioContent() {
     const searchParams = useSearchParams();
     const router = useRouter();
     const address = searchParams.get("address");
@@ -853,5 +853,18 @@ export default function PortfolioPage() {
                 </div>
             </div>
         </div>
+    );
+}
+
+export default function PortfolioPage() {
+    return (
+        <Suspense fallback={<div className="flex items-center justify-center min-h-screen">
+            <div className="text-center">
+                <h2 className="text-2xl font-bold mb-4">Loading Portfolio...</h2>
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-black mx-auto"></div>
+            </div>
+        </div>}>
+            <PortfolioContent />
+        </Suspense>
     );
 } 
