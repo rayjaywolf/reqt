@@ -225,7 +225,7 @@ export default function News() {
 
                                 {/* Newsletter Signup */}
                                 <div className="border-4 border-black p-3 md:p-5 bg-purple-600 mt-4 md:mt-8">
-                                    <div className="text-white font-black text-xl md:text-2xl mb-2 md:mb-3">GET REKT UPDATES</div>
+                                    <div className="text-white font-black text-xl md:text-2xl mb-2 md:mb-3">GET REQT UPDATES</div>
                                     <div className="flex flex-col md:flex-row gap-2 md:gap-3">
                                         <input
                                             type="email"
