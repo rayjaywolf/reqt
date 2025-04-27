@@ -68,6 +68,11 @@ export default function Roadmap() {
                     icon: "🔥"
                 },
                 {
+                    name: "Portfolio Tracker (Basic)",
+                    description: "Junior version of our upcoming Wallet Gone Wild tool.",
+                    icon: "💳"
+                },
+                {
                     name: "Crypto Daily",
                     description: "Stay informed with our unique blend of crypto news and pure entertainment.",
                     icon: "📰"
