@@ -221,7 +221,7 @@ export default function ClientLayout({
             {/* Left border */}
             <div className="hidden md:flex absolute left-4 top-4 bottom-4 w-10 bg-[#ffeb3b] text-[#000] items-center justify-center border-4 border-[#ffeb3b] z-0 [writing-mode:vertical-lr] rotate-180 font-mono font-bold tracking-wider py-2">
                 CONTRACT ADDRESS:
-                <span className="text-red-600"> &nbsp; SOON</span>
+                <span className="text-red-600"> &nbsp; Ch3xLF9z9t91Aygd9DfHfFGNZ5QEjS3ez34V2LpCpump</span>
             </div>
 
             {/* Right border */}
