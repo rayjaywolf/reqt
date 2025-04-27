@@ -6,6 +6,7 @@ import dynamic from 'next/dynamic';
 import { Marquee } from "@/components/magicui/marquee";
 import Image from "next/image";
 import Link from "next/link";
+import { trackEvent } from '@/lib/analytics'
 
 // Dynamically import the TypingAnimation component with ssr disabled
 const TypingAnimation = dynamic(
@@ -302,6 +303,7 @@ export default function Home() {
   };
 
   const handleRoast = async () => {
+    trackEvent('roast_wallet_clicked', { walletAddress })
     if (!portfolioData) return;
 
     setIsRoasting(true);
@@ -430,6 +432,7 @@ ${summaryData.tokens.map(token => `
   };
 
   const handleNextParagraph = () => {
+    trackEvent('next_paragraph_clicked', { currentIndex: currentParagraphIndex })
     if (currentParagraphIndex < roastParagraphs.length - 1) {
       setCurrentParagraphIndex(prev => prev + 1);
       setTypedContent("");
@@ -441,6 +444,7 @@ ${summaryData.tokens.map(token => `
   };
 
   const handlePreviousParagraph = () => {
+    trackEvent('previous_paragraph_clicked', { currentIndex: currentParagraphIndex })
     if (currentParagraphIndex > 0) {
       setCurrentParagraphIndex(prev => prev - 1);
       setTypedContent("");
@@ -449,6 +453,7 @@ ${summaryData.tokens.map(token => `
   };
 
   const handleReset = () => {
+    trackEvent('reset_wallet_clicked')
     setCurrentScreen('input');
     setInputAddress("");
     setWalletAddress("");

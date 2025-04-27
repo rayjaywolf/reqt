@@ -5,6 +5,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { trackEvent } from '@/lib/analytics'
 
 interface TokenData {
     associatedTokenAddress: string;
@@ -70,6 +71,8 @@ interface ProfitCalculation {
     averageSellPrice: number;
 }
 
+type TabType = "overview" | "tokens" | "nfts" | "swaps"
+
 function PortfolioContent() {
     const searchParams = useSearchParams();
     const router = useRouter();
@@ -79,7 +82,7 @@ function PortfolioContent() {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
     const [solanaPrice, setSolanaPrice] = useState<number | null>(null);
-    const [activeTab, setActiveTab] = useState<"overview" | "tokens" | "nfts" | "swaps">("overview");
+    const [activeTab, setActiveTab] = useState<TabType>("overview");
     const [sortConfig, setSortConfig] = useState<{
         key: string;
         direction: "ascending" | "descending";
@@ -219,11 +222,11 @@ function PortfolioContent() {
     };
 
     const handleSort = (key: string) => {
-        let direction: "ascending" | "descending" = "ascending";
-        if (sortConfig.key === key && sortConfig.direction === "ascending") {
-            direction = "descending";
-        }
-        setSortConfig({ key, direction });
+        trackEvent('portfolio_sort_clicked', { sortKey: key, currentDirection: sortConfig.direction })
+        setSortConfig(current => ({
+            key,
+            direction: current.key === key && current.direction === 'ascending' ? 'descending' : 'ascending'
+        }))
     };
 
     const getSortedTokens = () => {
@@ -662,12 +665,18 @@ function PortfolioContent() {
         );
     };
 
+    const handleTabChange = (tab: TabType) => {
+        trackEvent('portfolio_tab_changed', { tab })
+        setActiveTab(tab)
+    }
+
     const handleWalletSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
+        e.preventDefault()
         if (walletInput.trim()) {
-            router.push(`/portfolio?address=${walletInput.trim()}`);
+            trackEvent('portfolio_wallet_submitted', { walletAddress: walletInput.trim() })
+            router.push(`/portfolio?address=${walletInput.trim()}`)
         }
-    };
+    }
 
     useEffect(() => {
         setCurrentPage(1);
@@ -799,7 +808,7 @@ function PortfolioContent() {
                 <div className="bg-white rounded-lg border-4 border-black overflow-hidden">
                     <div className="flex flex-wrap border-b-4 border-black">
                         <button
-                            onClick={() => setActiveTab("overview")}
+                            onClick={() => handleTabChange("overview")}
                             className={cn(
                                 "px-4 py-2 font-mono font-black uppercase text-sm",
                                 activeTab === "overview"
@@ -810,7 +819,7 @@ function PortfolioContent() {
                             OVERVIEW
                         </button>
                         <button
-                            onClick={() => setActiveTab("tokens")}
+                            onClick={() => handleTabChange("tokens")}
                             className={cn(
                                 "px-4 py-2 font-mono font-black uppercase text-sm",
                                 activeTab === "tokens"
@@ -821,7 +830,7 @@ function PortfolioContent() {
                             TOKENS
                         </button>
                         <button
-                            onClick={() => setActiveTab("nfts")}
+                            onClick={() => handleTabChange("nfts")}
                             className={cn(
                                 "px-4 py-2 font-mono font-black uppercase text-sm",
                                 activeTab === "nfts"
@@ -832,7 +841,7 @@ function PortfolioContent() {
                             NFTS
                         </button>
                         <button
-                            onClick={() => setActiveTab("swaps")}
+                            onClick={() => handleTabChange("swaps")}
                             className={cn(
                                 "px-4 py-2 font-mono font-black uppercase text-sm",
                                 activeTab === "swaps"

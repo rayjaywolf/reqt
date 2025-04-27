@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Marquee } from "@/components/magicui/marquee";
 import Image from "next/image";
 import Link from "next/link";
+import { trackEvent } from '@/lib/analytics'
 
 export default function ClientLayout({
     children,
@@ -33,7 +34,7 @@ export default function ClientLayout({
     }, []);
 
     const handleMenuIconClick = (icon: string) => {
-        console.log(`Clicked on ${icon} icon`);
+        trackEvent('menu_icon_clicked', { icon })
         if (icon === 'close') {
             setIsMenuOpen(false);
         }

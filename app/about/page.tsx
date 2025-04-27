@@ -66,7 +66,7 @@ export default function About() {
                             REQT is a satirical platform that exposes the absurdity of the Solana ecosystem. We analyze your wallet, mock your trading decisions, and turn your financial losses into comedy gold.
                         </p>
                         <div className="mt-4 bg-black text-white p-2 font-mono text-sm border-2 border-black">
-                            <span className="font-black">CONTRACT:</span> ALUhJzNV349geyKwH5msJRfq9EjMsQ7vTRCiEaWFjh4j
+                            <span className="font-black">CONTRACT:</span> Soon
                         </div>
                     </div>
 
